@@ -22,19 +22,23 @@
       "foreignKey": "productId"
     },
     "types": {
-      "type": "belongsTo",
+      "type": "embedsOne",
       "model": "Type",
+      "property": "type",
       "foreignKey": "typeId",
       "options": {
-        "nestRemoting": true
+        "validate": true,
+        "forceId": false
       }
     },
     "categories": {
-      "type": "belongsTo",
+      "type": "embedsOne",
       "model": "Category",
+      "property": "category",
       "foreignKey": "categoryId",
       "options": {
-        "nestRemoting": true
+        "validate": true,
+        "forceId": false
       }
     }
   },
