@@ -1,0 +1,62 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "User": {
+    "dataSource": "db"
+  },
+  "AccessToken": {
+    "dataSource": "db",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "db",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "db",
+    "public": false,
+    "options": {
+      "strictObjectIDCoercion": true
+    }
+  },
+  "Role": {
+    "dataSource": "db",
+    "public": false
+  },
+  "Customer": {
+    "dataSource": "postgresDS",
+    "public": true
+  },
+  "Product": {
+    "dataSource": "postgresDS",
+    "public": true
+  },
+  "Order": {
+    "dataSource": "postgresDS",
+    "public": true
+  },
+  "Invoice": {
+    "dataSource": "postgresDS",
+    "public": false
+  },
+  "Category": {
+    "dataSource": "postgresDS",
+    "public": true
+  },
+  "Type": {
+    "dataSource": "postgresDS",
+    "public": true
+  }
+}

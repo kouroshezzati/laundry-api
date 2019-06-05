@@ -1,0 +1,43 @@
+{
+  "name": "Product",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "price": {
+      "type": "number"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "invoices": {
+      "type": "hasMany",
+      "model": "Invoice",
+      "foreignKey": "productId"
+    },
+    "types": {
+      "type": "belongsTo",
+      "model": "Type",
+      "foreignKey": "typeId",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "categories": {
+      "type": "belongsTo",
+      "model": "Category",
+      "foreignKey": "categoryId",
+      "options": {
+        "nestRemoting": true
+      }
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
