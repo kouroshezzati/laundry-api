@@ -1,10 +1,7 @@
 var path = require("path");
 var lodash = require("lodash");
 var app = require(path.resolve(__dirname, "./server.js"));
-var models = require(path.resolve(
-  __dirname,
-  "./model-config.json"
-));
+var models = require("./model-config.json");
 
 function autoMigrateAll(dataSourceName) {
   var ds = app.datasources[dataSourceName];

@@ -11,7 +11,11 @@
       "required": true
     },
     "price": {
-      "type": "number"
+      "precision": 32,
+      "type": "number",
+      "postgresql": {
+        "dataType": "decimal"
+      }
     }
   },
   "validations": [],
@@ -24,8 +28,8 @@
     "types": {
       "type": "embedsOne",
       "model": "Type",
-      "property": "type",
       "foreignKey": "typeId",
+      "property": "type",
       "options": {
         "validate": true,
         "forceId": false
@@ -34,8 +38,8 @@
     "categories": {
       "type": "embedsOne",
       "model": "Category",
-      "property": "category",
       "foreignKey": "categoryId",
+      "property": "category",
       "options": {
         "validate": true,
         "forceId": false

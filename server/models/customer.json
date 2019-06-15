@@ -19,7 +19,10 @@
       "required": true,
       "default": "Netherlands"
     },
-    "address2": {
+    "address": {
+      "type": "string"
+    },
+    "apartment": {
       "type": "string"
     },
     "zip": {
@@ -49,6 +52,13 @@
       }
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "ALLOW"
+    }
+  ],
   "methods": {}
 }

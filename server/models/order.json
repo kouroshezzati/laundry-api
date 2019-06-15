@@ -9,6 +9,12 @@
     "date": {
       "type": "date",
       "required": true
+    },
+    "payed": {
+      "type": "boolean"
+    },
+    "transaction": {
+      "type": "string"
     }
   },
   "validations": [],
