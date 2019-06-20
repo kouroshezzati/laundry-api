@@ -8,11 +8,19 @@ module.exports = async (req, res) => {
     const Invoice = models.Invoice;
     const Product = models.Product;
     const customerId = req.params.id;
+    const {skip, limit} = req.query;
     if (isNaN(customerId)) {
-      throw new Error(customerId + " is invalid parameter, try again.");
+      throw new Error(customerId + " is invalid id, try again.");
     }
-    let data = {};
-    const orders = await Order.find({ where: { customerId } });
+    if(skip && isNaN(skip)){
+      throw new Error(skip + " is invalid skip parameter, try again.");
+    }
+    if(limit && isNaN(limit)){
+      throw new Error(limit + " is invalid limit parameter, try again.");
+    }
+    const count = await Order.count();
+    let data = {count, skip, limit};
+    const orders = await Order.find({ where: { customerId }, skip, limit });
     orders.map(
       order =>
         (data[order.id] = {
