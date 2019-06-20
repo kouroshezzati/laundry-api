@@ -40,7 +40,9 @@ module.exports = async (req, res) => {
               const _products = await Product.findOne({
                 where: { id: invoice.productId }
               });
+              _products.number = invoice.number;
               data[order.id].products.push(_products);
+              data[order.id].amount = order.amount;
               return resolve(_products);
             } catch (e) {
               console.log(chalk.red(e));
