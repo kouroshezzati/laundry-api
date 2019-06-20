@@ -1,0 +1,54 @@
+const app = require("../../server/server");
+const chalk = require("chalk");
+const models = app.models;
+
+module.exports = async (req, res) => {
+  try {
+    const Order = models.Order;
+    const Invoice = models.Invoice;
+    const Product = models.Product;
+    const customerId = req.params.id;
+    if (isNaN(customerId)) {
+      throw new Error(customerId + " is invalid parameter, try again.");
+    }
+    let data = {};
+    const orders = await Order.find({ where: { customerId } });
+    orders.map(
+      order =>
+        (data[order.id] = {
+          products: [],
+          transaction: order.transaction,
+          payed: order.payed,
+          description: order.description,
+          date: order.date
+        })
+    );
+    const invoices = orders.map(async order => {
+      try {
+        const _invoices = await Invoice.find({ where: { orderId: order.id } });
+        const products = _invoices.map(async invoice => {
+          return new Promise(async (resolve, reject) => {
+            try {
+              const _products = await Product.findOne({
+                where: { id: invoice.productId }
+              });
+              data[order.id].products.push(_products);
+              return resolve(_products);
+            } catch (e) {
+              console.log(chalk.red(e));
+              return reject(e);
+            }
+          });
+        });
+        await Promise.all(products);
+      } catch (e) {
+        console.log(chalk.red(e));
+      }
+    });
+    await Promise.all(invoices);
+    res.json(data);
+  } catch (e) {
+    console.log(chalk.red(e));
+    res.json({});
+  }
+};

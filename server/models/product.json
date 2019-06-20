@@ -11,8 +11,8 @@
       "required": true
     },
     "price": {
-      "precision": 32,
       "type": "number",
+      "precision": 32,
       "postgresql": {
         "dataType": "decimal"
       }
