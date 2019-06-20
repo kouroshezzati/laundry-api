@@ -3,13 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-'use strict';
-const ModelPagination = require('../../components/pagination/index');
+"use strict";
+const ModelPagination = require("../../components/pagination/index");
 
 module.exports = function(server) {
   // Install a `/` route that returns server status
   var router = server.loopback.Router();
-  router.get('/', server.loopback.status());
-  router.get("/MyOrders/:id", ModelPagination);
+  router.get("/", server.loopback.status());
+  router.get("/api/MyOrders/:id", ModelPagination);
   server.use(router);
 };
