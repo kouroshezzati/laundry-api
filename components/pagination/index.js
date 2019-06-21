@@ -8,22 +8,23 @@ module.exports = async (req, res) => {
     const Invoice = models.Invoice;
     const Product = models.Product;
     const customerId = req.params.id;
-    const {skip, limit} = req.query;
+    const { skip, limit } = req.query;
+    const page = parseInt(req.query.page, 10) || 0;
     if (isNaN(customerId)) {
       throw new Error(customerId + " is invalid id, try again.");
     }
-    if(skip && isNaN(skip)){
+    if (skip && isNaN(skip)) {
       throw new Error(skip + " is invalid skip parameter, try again.");
     }
-    if(limit && isNaN(limit)){
+    if (limit && isNaN(limit)) {
       throw new Error(limit + " is invalid limit parameter, try again.");
     }
     const count = await Order.count();
-    let data = {count, skip, limit};
+    let data = { orders: {}, count, skip, limit, page };
     const orders = await Order.find({ where: { customerId }, skip, limit });
     orders.map(
       order =>
-        (data[order.id] = {
+        (data.orders[order.id] = {
           products: [],
           transaction: order.transaction,
           payed: order.payed,
@@ -41,8 +42,8 @@ module.exports = async (req, res) => {
                 where: { id: invoice.productId }
               });
               _products.number = invoice.number;
-              data[order.id].products.push(_products);
-              data[order.id].amount = order.amount;
+              data.orders[order.id].products.push(_products);
+              data.orders[order.id].amount = order.amount;
               return resolve(_products);
             } catch (e) {
               console.log(chalk.red(e));
