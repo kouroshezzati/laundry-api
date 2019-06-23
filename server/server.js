@@ -7,22 +7,22 @@
 
 var loopback = require("loopback");
 var boot = require("loopback-boot");
-// var https = require("https");
-// var sslConfig = require("./ssl-config");
+var https = require("https");
+var sslConfig = require("./ssl-config");
 
 var app = (module.exports = loopback());
 
 app.start = function() {
   // start the web
-  // var options = {
-  //   key: sslConfig.privateKey,
-  //   cert: sslConfig.certificate
-  // };
-  // var server = https.createServer(options, app);
-  return app.listen(app.get("port"), function() {
+  var options = {
+    key: sslConfig.privateKey,
+    cert: sslConfig.certificate
+  };
+  var server = https.createServer(options, app);
+  return server.listen(app.get("port"), function() {
     app.emit("started");
-    // var baseUrl = `https://localhost:${app.get("port")}`;
-    var baseUrl = app.get('url').replace(/\/$/, '');
+    var baseUrl = `https://localhost:${app.get("port")}`;
+    // var baseUrl = app.get('url').replace(/\/$/, '');
     console.log("Web server listening at: %s", baseUrl);
     if (app.get("loopback-component-explorer")) {
       var explorerPath = app.get("loopback-component-explorer").mountPath;
