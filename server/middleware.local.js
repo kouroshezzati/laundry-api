@@ -1,7 +1,7 @@
 var whitelist = [
   "https://bubblesonline.nl",
-  "http://www.bubblesonline.nl",
-  "http://145.131.3.166"
+  "https://www.bubblesonline.nl",
+  "https://145.131.3.166"
 ];
 
 module.exports = {
@@ -9,6 +9,7 @@ module.exports = {
     cors: {
       params: {
         origin: function(origin, callback) {
+		console.log('the origin is', origin);
           if (whitelist.indexOf(origin) !== -1) {
             callback(null, true);
           } else {
