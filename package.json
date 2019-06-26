@@ -8,6 +8,8 @@
   "scripts": {
     "lint": "eslint .",
     "start": "node .",
+    "dev": "cross-env NODE_ENV=development node .",
+    "prod": "cross-env NODE_ENV=production node .",
     "posttest": "npm run lint && npm audit"
   },
   "dependencies": {
