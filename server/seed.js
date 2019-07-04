@@ -1,7 +1,7 @@
 const app = require("./server");
 const chalk = require("chalk");
 const _ = require("lodash");
-var data = require("./data.json");
+var data = require("./data.js");
 const models = app.models;
 
 const callbackHandler = (err, obj) => {
