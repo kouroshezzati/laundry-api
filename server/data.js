@@ -400,14 +400,6 @@ module.exports = [
     "type": "cheap"
   },
   {
-    "name": "Carpet",
-    "price": 105,
-    "category": {
-      "name": "ESPECIAL OFFER"
-    },
-    "type": "expensive"
-  },
-  {
     "name": "LAUNDRY WASH & FOLD (10 KG)",
     "price": "22.00",
     "category": {
