@@ -12,5 +12,24 @@
     "name": "postgresDS",
     "user": "postgres",
     "connector": "postgresql"
+  },
+  "BubblesonlineEmail": {
+    "name": "BubblesonlineEmail",
+    "connector": "mail",
+    "transports": [
+      {
+        "type": "smtp",
+        "host": "info.bubblesonline.nl",
+        "secure": false,
+        "port": 587,
+        "tls": {
+          "rejectUnauthorized": false
+        },
+        "auth": {
+          "user": "info@bubblesonline.nl",
+          "pass": "p`8+,k)$[/~m4(zc&B^qx;!.*weKraCPMH@9%E7<>-=J?#TuN\""
+          }
+        }
+      ]
+    }
   }
-}

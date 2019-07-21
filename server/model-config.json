@@ -13,6 +13,9 @@
       "./mixins"
     ]
   },
+  "Email": {
+    "dataSource": "BubblesonlineEmail"
+  },
   "User": {
     "dataSource": "db"
   },

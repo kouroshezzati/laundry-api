@@ -19,7 +19,7 @@
     "description": {
       "type": "string"
     },
-    "amount":{
+    "amount": {
       "type": "string",
       "precision": 32,
       "postgresql": {
