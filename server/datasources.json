@@ -19,7 +19,7 @@
     "transports": [
       {
         "type": "smtp",
-        "host": "info.bubblesonline.nl",
+        "host": "mail.bubblesonline.nl",
         "secure": false,
         "port": 587,
         "tls": {
