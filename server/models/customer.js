@@ -19,7 +19,8 @@ module.exports = function(Customer) {
         from: "no-reply@bubblesonline.nl",
         to: info.email,
         subject: "reset password",
-        html: `<div>Your reset link is: <a href="https://www.bubblesonline.nl/reset-password/?${
+        html: `<div>Your reset link is:
+         <a href="https://www.bubblesonline.nl/reset-password/?code=${
           info.accessToken.id
         }">here.</a></div>`
       },
