@@ -1,11 +1,8 @@
-//test send email
 var nodemailer = require("nodemailer");
 var transporter = nodemailer.createTransport({
   host: "mail.bubblesonline.nl",
   port: 25,
-  secure: true, // true for 465, false for other ports
-  auth: {
-    user: "mosl3m", // generated ethereal user
+  secure: false, // true for 465, false for other ports
     pass: 'p`8+,k)$[/~m4(zc&B^qx;!.*weKraCPMH@9%E7<>-=J?#TuN"'
   }
 });
