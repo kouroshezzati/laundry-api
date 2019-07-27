@@ -12,6 +12,7 @@ const sendmail = require("sendmail")({
 
 module.exports = (req, res) => {
   try {
+    console.log(req.body);
     const recaptchaResponse = req.body["g-recaptcha-response"];
     if (
       recaptchaResponse === undefined ||

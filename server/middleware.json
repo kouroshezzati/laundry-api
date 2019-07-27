@@ -34,7 +34,9 @@
   "auth": {
     "loopback#token": {}
   },
-  "parse": {},
+  "parse": {
+    "body-parser#json": {}
+  },
   "routes": {
     "loopback#rest": {
       "paths": [
