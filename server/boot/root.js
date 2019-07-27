@@ -12,6 +12,6 @@ module.exports = function(server) {
   var router = server.loopback.Router();
   router.get("/", server.loopback.status());
   router.get("/api/MyOrders/:id", ModelPagination);
-  router.post("/contactus", Contactus);
+  router.post("/api/contactus", Contactus);
   server.use(router);
 };
