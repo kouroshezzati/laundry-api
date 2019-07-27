@@ -5,11 +5,13 @@
 
 "use strict";
 const ModelPagination = require("../../components/pagination/index");
+const Contactus = require("../../components/contactus/index");
 
 module.exports = function(server) {
   // Install a `/` route that returns server status
   var router = server.loopback.Router();
   router.get("/", server.loopback.status());
   router.get("/api/MyOrders/:id", ModelPagination);
+  router.get("/contactus", Contactus);
   server.use(router);
 };
