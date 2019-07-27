@@ -35,8 +35,10 @@ module.exports = (req, res) => {
       "&remoteip=" +
       req.connection.remoteAddress;
     // Hitting GET request to the URL, Google will respond with success or error scenario.
+	console.log('request will start', verificationUrl)
     request(verificationUrl, function(error, response, body) {
       body = JSON.parse(body);
+	console.log('the request body is:', body)
       // Success will be true or false depending upon captcha validation.
       if (body.success !== undefined && !body.success) {
         return res.json({
