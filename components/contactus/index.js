@@ -48,10 +48,10 @@ module.exports = (req, res) => {
       }
       sendmail(
         {
-          from: req.body.from,
+          from: req.body.email,
           to: "info@bubblesonline.nl",
           subject: req.body.subject,
-          body: req.body.body
+          body: req.body.name + ": " + req.body.body
         },
         function(err, reply) {
           if (err) {
