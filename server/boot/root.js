@@ -6,7 +6,7 @@
 "use strict";
 const ModelPagination = require("../../components/pagination/index");
 const Contactus = require("../../components/contactus/index");
-const { AddOrder, ReceiveOrder } = require("../../components/Order/index");
+const { AddOrder, ReceiveOrder } = require("../../components/order/index");
 
 module.exports = function(server) {
   // Install a `/` route that returns server status
