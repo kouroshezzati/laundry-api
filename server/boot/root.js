@@ -7,6 +7,7 @@
 const ModelPagination = require("../../components/pagination/index");
 const Contactus = require("../../components/contactus/index");
 const { AddOrder, ReceiveOrder } = require("../../components/order/index");
+const PaymentWebhook = require("../../components/webhook/payment");
 
 module.exports = function(server) {
   // Install a `/` route that returns server status
@@ -14,7 +15,8 @@ module.exports = function(server) {
   router.get("/", server.loopback.status());
   router.get("/api/MyOrders/:id", ModelPagination);
   router.post("/api/contactus", Contactus);
-  router.post("/api/AddOrder", AddOrder)
-  router.get("/api/Order/:id", ReceiveOrder)
+  router.post("/api/AddOrder", AddOrder);
+  router.get("/api/Order/:id", ReceiveOrder);
+  router.post("/api/payment/webhook", PaymentWebhook);
   server.use(router);
 };
