@@ -132,8 +132,8 @@ const ReceiveOrder = async (req, res) => {
     const result = await Order.updateAll({ id }, { payed: true });
     if (result.count === 1) {
       // const invoices = await Invoice.findAll({ where: { orderId: id } });
-      console.log(chalk.green(JSON.stringify(invoices)));
-      console.log("redirecting..");
+      // console.log(chalk.green(JSON.stringify(invoices)));
+      console.log("Redirect to https://www.bubblesonline.nl/invoice/" + id);
       res.writeHead(302, {
         location: "https://www.bubblesonline.nl/invoice/" + id
       });
