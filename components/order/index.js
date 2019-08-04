@@ -107,7 +107,8 @@ const AddOrder = async (req, res) => {
                 currency: "EUR"
               },
               description: "My first API payment",
-              redirectUrl: "https://bubblesonline.nl/api/Order/" + orderId
+              redirectUrl: "https://bubblesonline.nl/invoice/" + orderId,
+              webhookUrl: "https://bubblesonline.nl/api/payment/webhook/" + orderId
             })
             .then(payment => {
               res.send(payment.getPaymentUrl());
