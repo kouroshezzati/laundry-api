@@ -63,14 +63,14 @@ const calc = (operator, a, b) => {
 const AddOrder = async (req, res) => {
   try {
     const { Order, Invoice, Product } = models;
-    const { customerId } = req.body;
+    const { customerId, description = "" } = req.body;
     if (!customerId) {
       throw new Error("Customer id is not found. please provide it!");
     }
     Order.create(
       {
         customerId,
-        description: req.body.description,
+        description: description,
         date: new Date()
       },
       (err, model) => {
@@ -99,23 +99,38 @@ const AddOrder = async (req, res) => {
             })
           );
           console.log("total price is:", price);
-          await Order.updateAll({ id: orderId }, { amount: price });
+          const paymentPayload = {
+            amount: {
+              value: price,
+              currency: "EUR"
+            },
+            redirectUrl: "https://bubblesonline.nl/invoice/" + orderId,
+            webhookUrl:
+              "https://bubblesonline.nl/api/payment/webhook/" + orderId
+          };
+          paymentPayload.description = description
+            ? description
+            : `order id is: ${orderId}`;
+          console.log(
+            "The payment payload:",
+            chalk.green(JSON.stringify(paymentPayload))
+          );
           mollie.payments
-            .create({
-              amount: {
-                value: price,
-                currency: "EUR"
-              },
-              description: "My first API payment",
-              redirectUrl: "https://bubblesonline.nl/invoice/" + orderId,
-              webhookUrl: "https://bubblesonline.nl/api/payment/webhook/" + orderId
-            })
-            .then(payment => {
+            .create(paymentPayload)
+            .then(async payment => {
+              const orderUpdateResult = await Order.updateAll(
+                { id: orderId },
+                { paymentId: payment.id, amount: price }
+              );
+              console.log(
+                "the update order record result is:",
+                chalk.green(JSON.stringify(orderUpdateResult, 2, null))
+              );
               res.send(payment.getPaymentUrl());
             })
             .catch(err => {
+              console.log(JSON.stringify(err, 2, null));
               throw new Error(err);
-              // Handle the error
             });
         });
       }

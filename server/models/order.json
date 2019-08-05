@@ -10,21 +10,17 @@
       "type": "date",
       "required": true
     },
-    "payed": {
-      "type": "boolean"
+    "status": {
+      "type": "string"
     },
-    "transaction": {
+    "paymentId": {
       "type": "string"
     },
     "description": {
       "type": "string"
     },
     "amount": {
-      "type": "string",
-      "precision": 32,
-      "postgresql": {
-        "dataType": "decimal"
-      }
+      "type": "string"
     }
   },
   "validations": [],
