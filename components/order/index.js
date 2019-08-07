@@ -63,14 +63,21 @@ const calc = (operator, a, b) => {
 const AddOrder = async (req, res) => {
   try {
     const { Order, Invoice, Product } = models;
-    const { customerId, description = "" } = req.body;
+    const {
+      customerId,
+      description = "",
+      deliver_date,
+      pickup_date
+    } = req.body;
     if (!customerId) {
       throw new Error("Customer id is not found. please provide it!");
     }
     Order.create(
       {
         customerId,
-        description: description,
+        description,
+        deliver_date,
+        pickup_date,
         date: new Date()
       },
       (err, model) => {
@@ -80,6 +87,10 @@ const AddOrder = async (req, res) => {
         const orderId = model.id;
         let { invoices } = req.body;
         invoices = invoices.map(_invoice => ({ ..._invoice, orderId }));
+        const selectedProducts = {};
+        invoices.map(_invoice => {
+          selectedProducts[_invoice.productId] = _invoice.number;
+        });
         console.log(chalk.blue(JSON.stringify(invoices)));
         Invoice.create(invoices, async (err, invoiceModel) => {
           if (err) {
@@ -98,7 +109,7 @@ const AddOrder = async (req, res) => {
               );
             })
           );
-          console.log("total price is:", price);
+          console.log(chalk.green("total price is: ", price));
           const paymentPayload = {
             amount: {
               value: price,
@@ -106,7 +117,15 @@ const AddOrder = async (req, res) => {
             },
             redirectUrl: "https://bubblesonline.nl/invoice/" + orderId,
             webhookUrl:
-              "https://bubblesonline.nl/api/payment/webhook/" + orderId
+              "https://bubblesonline.nl/api/payment/webhook/" + orderId,
+            metadata: {
+              selectedProducts,
+              price,
+              customerId,
+              orderId,
+              deliver_date,
+              pickup_date
+            }
           };
           paymentPayload.description = description
             ? description

@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
     console.log(
       chalk.red(`order id:${orderId}'s payment status is ${payment.status}`)
     );
-    res.send(payment);
+    res.json(payment);
   } catch (err) {
     console.log(chalk.red(err));
     res.send(err);
