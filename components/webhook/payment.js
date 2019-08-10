@@ -23,7 +23,6 @@ module.exports = async (req, res) => {
     if (!order) {
       throw new Error("Invalid order id!");
     }
-    console.log("the order result is", order);
     const payment = await mollie.payments.get(order.paymentId);
     await Order.updateAll({ id: orderId }, { status: payment.status });
     console.log(
@@ -60,8 +59,7 @@ module.exports = async (req, res) => {
         <tr><td>Description:</td><td>${theCustomer.description}</td></tr>
       </div>
     </div>`;
-    console.log(chalk.green(customerInformation));
-    console.log(chalk.green(invoiceItems));
+
     if (payment.status === "paid") {
       sendmail(
         {
@@ -83,12 +81,14 @@ module.exports = async (req, res) => {
           return res.json({
             reply,
             responseCode: 0,
-            responseDesc: "Sucess"
+            responseDesc: "Sucess",
+            payment
           });
         }
       );
+    } else {
+      res.status(404).send(orderId + " order is not paid");
     }
-    res.json(payment);
   } catch (err) {
     console.log(chalk.red(err));
     res.send(err);
