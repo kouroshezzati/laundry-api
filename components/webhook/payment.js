@@ -66,7 +66,7 @@ module.exports = async (req, res) => {
           from: "no-replay@bubblesonline.nl",
           to: "info@bubblesonline.nl",
           subject: "payment",
-          body: `<h3>There is payment orderd with these information</h3>
+          html: `<h3>There is payment orderd with these information</h3>
           ${invoiceItems}
           <hr>
           ${customerInformation}
