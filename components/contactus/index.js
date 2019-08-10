@@ -19,10 +19,7 @@ module.exports = (req, res) => {
       recaptchaResponse === "" ||
       recaptchaResponse === null
     ) {
-      return res.json({
-        responseCode: 1,
-        responseDesc: "Please select captcha"
-      });
+      return res.status(500).json({ message: "Please select captcha" });
     }
     // Put your secret key here.
     var secretKey = "6LePa68UAAAAAAwxGd6S0WSJqHCXBLozIDkkqUTN";
@@ -35,16 +32,13 @@ module.exports = (req, res) => {
       "&remoteip=" +
       req.connection.remoteAddress;
     // Hitting GET request to the URL, Google will respond with success or error scenario.
-	console.log('request will start', verificationUrl)
+    console.log("request will start", verificationUrl);
     request(verificationUrl, function(error, response, body) {
       body = JSON.parse(body);
-	console.log('the request body is:', body)
+      console.log("the request body is:", body);
       // Success will be true or false depending upon captcha validation.
       if (body.success !== undefined && !body.success) {
-        return res.json({
-          responseCode: 1,
-          responseDesc: "Failed captcha verification"
-        });
+        return res.status(500).json(error);
       }
       sendmail(
         {
@@ -56,7 +50,7 @@ module.exports = (req, res) => {
         function(err, reply) {
           if (err) {
             console.log(err && err.stack);
-            return res.JSON({ err });
+            return res.json({ err });
           }
           console.dir(reply);
           return res.json({

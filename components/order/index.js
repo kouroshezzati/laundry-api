@@ -62,7 +62,7 @@ const calc = (operator, a, b) => {
 
 const AddOrder = async (req, res) => {
   try {
-    const { Order, Invoice, Product } = models;
+    const { Order, Invoice, Product, Customer } = models;
     const {
       customerId,
       description = "",
@@ -71,6 +71,10 @@ const AddOrder = async (req, res) => {
     } = req.body;
     if (!customerId) {
       throw new Error("Customer id is not found. please provide it!");
+    }
+    const theCustomer = Customer.findOne({where:{customerId}});
+    if(!theCustomer){
+      throw new Error("There is no customer with this id");
     }
     Order.create(
       {
@@ -88,6 +92,7 @@ const AddOrder = async (req, res) => {
         let { invoices } = req.body;
         invoices = invoices.map(_invoice => ({ ..._invoice, orderId }));
         const selectedProducts = {};
+        const mailInvoices = [];
         invoices.map(_invoice => {
           selectedProducts[_invoice.productId] = _invoice.number;
         });
@@ -107,6 +112,11 @@ const AddOrder = async (req, res) => {
                 multipleCurrency(product.price, _invoice.number),
                 price
               );
+              const theInvoice = invoices.find(__invoice => {
+                return __invoice.productId == product.id;
+              });
+              mailInvoices.push({ ...theInvoice, name: product.name });
+              console.log("the product is", theInvoice);
             })
           );
           console.log(chalk.green("total price is: ", price));
@@ -124,7 +134,9 @@ const AddOrder = async (req, res) => {
               customerId,
               orderId,
               deliver_date,
-              pickup_date
+              pickup_date,
+              mailInvoices,
+              theCustomer
             }
           };
           paymentPayload.description = description
