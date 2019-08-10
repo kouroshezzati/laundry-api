@@ -72,10 +72,14 @@ const AddOrder = async (req, res) => {
     if (!customerId) {
       throw new Error("Customer id is not found. please provide it!");
     }
-    const theCustomer = Customer.findOne({where:{customerId}});
-    if(!theCustomer){
+    const theCustomer = Customer.findOne({ where: { customerId } });
+    if (!theCustomer) {
       throw new Error("There is no customer with this id");
     }
+    console.log(
+      "the customer is :",
+      chalk.green(JSON.stringify(theCustomer, null, 2))
+    );
     Order.create(
       {
         customerId,
@@ -115,7 +119,11 @@ const AddOrder = async (req, res) => {
               const theInvoice = invoices.find(__invoice => {
                 return __invoice.productId == product.id;
               });
-              mailInvoices.push({ ...theInvoice, name: product.name });
+              mailInvoices.push({
+                ...theInvoice,
+                name: product.name,
+                price: product.price
+              });
               console.log("the product is", theInvoice);
             })
           );
