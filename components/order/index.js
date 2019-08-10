@@ -72,14 +72,12 @@ const AddOrder = async (req, res) => {
     if (!customerId) {
       throw new Error("Customer id is not found. please provide it!");
     }
-    const theCustomer = Customer.findOne({ where: { customerId } });
+    const theCustomer = await Customer.findOne({ where: { customerId } });
     if (!theCustomer) {
       throw new Error("There is no customer with this id");
     }
-    console.log(
-      "the customer is :",
-      chalk.green(JSON.stringify(theCustomer, null, 2))
-    );
+    const { firstName } = theCustomer;
+    console.log("the customer result is", chalk.green(firstName));
     Order.create(
       {
         customerId,
