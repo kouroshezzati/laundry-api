@@ -34,9 +34,16 @@ module.exports = async (req, res) => {
     );
     const { metadata } = payment;
     const { mailInvoices, theCustomer, price } = metadata;
-    let invoiceItems = `<table>
+    let invoiceItems = `
+    <style>
+    th {
+      background: lightgray;
+      padding: 5px;
+    }
+    </style>
+    <table>
     <tr style="font-weight: 700;">
-      <td>ID</td><td>Name</td><td>Number</td><td>Price of each</td><td>Price</td>
+      <th>ID</th><th>Name</th><th>Number</th><th>Price of each</th><th>Price</th>
     </tr>`;
     mailInvoices.forEach(mailInvoice => {
       invoiceItems += `<tr>
