@@ -15,7 +15,7 @@ const sendmail = require("sendmail")({
   smtpHost: "localhost" // Default: -1 - extra smtp host after resolveMX
 });
 const imgLogo = `<img 
-        style="height:111;width:100;" 
+        style="height:111px;width:100px;" 
         src="https://www.bubblesonline.nl/static/media/logo_65.8ebfed72.png">`;
 
 module.exports = async (req, res) => {
