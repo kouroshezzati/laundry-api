@@ -32,9 +32,11 @@ module.exports = async (req, res) => {
       chalk.red(`order id:${orderId}'s payment status is ${payment.status}`)
     );
     const { metadata } = payment;
-    const { mailInvoices, theCustomer } = metadata;
+    const { mailInvoices, theCustomer, price } = metadata;
     let invoiceItems = `<table>
-    <tr><td>ID</td><td>Name</td><td>Number</td><td>Price</td></tr>`;
+    <tr style="font-weight: 700;">
+      <td>ID</td><td>Name</td><td>Number</td><td>Price</td>
+    </tr>`;
     mailInvoices.forEach(mailInvoice => {
       invoiceItems += `<tr>
       <td>${mailInvoice.productId}</td>
@@ -76,6 +78,8 @@ module.exports = async (req, res) => {
               }</td></tr>`
             : ""
         }
+        </table>
+        <h3>Total price: ${price}</h3>
       </div>
     </div>`;
     if (payment.status === "paid") {
