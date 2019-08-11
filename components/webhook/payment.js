@@ -66,14 +66,14 @@ module.exports = async (req, res) => {
       sendmail(
         {
           from: "no-replay@bubblesonline.nl",
-          to: "info@bubblesonline.nl",
+          to: ["info@bubblesonline.nl", theCustomer.email],
           subject: "payment",
           html: `<div style="text-align: center;">${imgLogo}</div>
           <h3>There is payment orderd with these information</h3>
           ${invoiceItems}
           <hr>
           ${customerInformation}
-          <p>Bubblesonline &copy; 2019.</p>
+          <p style="text-align: center;">Bubblesonline &copy; 2019.</p>
           `
         },
         function(err, reply) {
