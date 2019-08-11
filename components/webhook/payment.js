@@ -21,7 +21,7 @@ const imgLogo = `<img
 
 module.exports = async (req, res) => {
   try {
-    const { Order } = models;
+    const { Order, Customer, Invoice, Product } = models;
     const { orderId } = req.params;
     const order = await Order.findOne({ where: { id: orderId } });
     if (!order) {
@@ -33,8 +33,28 @@ module.exports = async (req, res) => {
       chalk.red(`order id:${orderId}'s payment status is ${payment.status}`)
     );
     const { metadata } = payment;
-    const { mailInvoices, theCustomer, price } = metadata;
-    let invoiceItems = `<table style="text-align: center;">
+    const { customerId, price, selectedProducts } = metadata;
+    const theCustomer = await Customer.findOne({ where: { id: customerId } });
+    const theOrder = await Order.findOne({ where: { id: orderId } });
+    const theInvoices = await Invoice.find({ where: { orderId } });
+    let mailInvoices = [];
+    await Promise.all(
+      theInvoices.map(async _theInvoice => {
+        const theProduct = await Product.findOne({
+          where: { id: _theInvoice.productId }
+        });
+        mailInvoices.push({
+          price: theProduct.price,
+          number: _theInvoice.number,
+          productId: _theInvoice.productId,
+          name: theProduct.name
+        });
+      })
+    );
+    let invoiceItems = `
+    <div>pickup date: ${theOrder.pickup_date}</div>
+    <div>deliver date: ${theOrder.deliver_date}</div>
+    <table style="text-align: center;">
     <tr style="font-weight: 700;background: lightgray;padding: 5px;">
       <th>ID</th><th>Name</th><th>Number</th><th>Price of each</th><th>Price</th>
     </tr>`;
@@ -107,7 +127,9 @@ module.exports = async (req, res) => {
             reply,
             responseCode: 0,
             responseDesc: "Sucess",
-            payment
+            payment,
+            pickupDate: theOrder.pickup_date,
+            deliverDate: theOrder.deliver_date
           });
         }
       );

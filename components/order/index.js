@@ -94,11 +94,9 @@ const AddOrder = async (req, res) => {
         let { invoices } = req.body;
         invoices = invoices.map(_invoice => ({ ..._invoice, orderId }));
         const selectedProducts = {};
-        const mailInvoices = [];
         invoices.map(_invoice => {
           selectedProducts[_invoice.productId] = _invoice.number;
         });
-        console.log(chalk.blue(JSON.stringify(invoices)));
         Invoice.create(invoices, async (err, invoiceModel) => {
           if (err) {
             throw new Error(err);
@@ -114,18 +112,8 @@ const AddOrder = async (req, res) => {
                 multipleCurrency(product.price, _invoice.number),
                 price
               );
-              const theInvoice = invoices.find(__invoice => {
-                return __invoice.productId == product.id;
-              });
-              mailInvoices.push({
-                ...theInvoice,
-                name: product.name,
-                price: product.price
-              });
-              console.log("the product is", theInvoice);
             })
           );
-          console.log(chalk.green("total price is: ", price));
           const paymentPayload = {
             amount: {
               value: price,
@@ -138,11 +126,7 @@ const AddOrder = async (req, res) => {
               selectedProducts,
               price,
               customerId,
-              orderId,
-              deliver_date,
-              pickup_date,
-              mailInvoices,
-              theCustomer
+              orderId
             }
           };
           paymentPayload.description = description
