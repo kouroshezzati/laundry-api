@@ -41,7 +41,7 @@ module.exports = async (req, res) => {
       padding: 5px;
     }
     </style>
-    <table>
+    <table style="text-align: center;">
     <tr style="font-weight: 700;">
       <th>ID</th><th>Name</th><th>Number</th><th>Price of each</th><th>Price</th>
     </tr>`;
