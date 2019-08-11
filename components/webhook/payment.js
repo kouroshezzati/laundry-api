@@ -69,7 +69,13 @@ module.exports = async (req, res) => {
               }</td></tr>`
             : ""
         }
-        <tr><td>Description:</td><td>${theCustomer.description}</td></tr>
+        ${
+          theCustomer.description
+            ? `<tr><td>Description:</td><td>${
+                theCustomer.description
+              }</td></tr>`
+            : ""
+        }
       </div>
     </div>`;
     if (payment.status === "paid") {
