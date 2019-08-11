@@ -1,5 +1,6 @@
 const app = require("../../server/server");
 const chalk = require("chalk");
+const moment = require("moment");
 const models = app.models;
 const mollie = require("@mollie/api-client")({
   apiKey: "test_DmRVtMkQJjrfS4Fr6xhubMybpwHfuK"
@@ -33,7 +34,7 @@ module.exports = async (req, res) => {
       chalk.red(`order id:${orderId}'s payment status is ${payment.status}`)
     );
     const { metadata } = payment;
-    const { customerId, price, selectedProducts } = metadata;
+    const { customerId, price } = metadata;
     const theCustomer = await Customer.findOne({ where: { id: customerId } });
     const theOrder = await Order.findOne({ where: { id: orderId } });
     const theInvoices = await Invoice.find({ where: { orderId } });
@@ -52,8 +53,12 @@ module.exports = async (req, res) => {
       })
     );
     let invoiceItems = `
-    <div>pickup date: ${theOrder.pickup_date}</div>
-    <div>deliver date: ${theOrder.deliver_date}</div>
+    <div>pickup date: ${moment(theOrder.pickup_date).format(
+      "MMMM D, YYYY HH:mm"
+    )}</div>
+    <div>deliver date: ${moment(theOrder.deliver_date).format(
+      "MMMM D, YYYY HH:mm"
+    )}</div>
     <table style="text-align: center;">
     <tr style="font-weight: 700;background: lightgray;padding: 5px;">
       <th>ID</th><th>Name</th><th>Number</th><th>Price of each</th><th>Price</th>
@@ -68,6 +73,9 @@ module.exports = async (req, res) => {
       </tr>`;
     });
     invoiceItems += `</table><h3>Sum: ${price}</h3>`;
+    if (theOrder.description) {
+      invoiceItems += `<h2>Description: ${theOrder.description}</h2>`;
+    }
     const customerInformation = `<div>
     <h3>Customer information:</h3>
       <table>
@@ -90,13 +98,6 @@ module.exports = async (req, res) => {
           theCustomer.companyName
             ? `<tr><td>CompanyName:</td><td>${
                 theCustomer.companyName
-              }</td></tr>`
-            : ""
-        }
-        ${
-          theCustomer.description
-            ? `<tr><td>Description:</td><td>${
-                theCustomer.description
               }</td></tr>`
             : ""
         }
