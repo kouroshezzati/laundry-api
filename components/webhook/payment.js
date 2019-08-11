@@ -51,14 +51,24 @@ module.exports = async (req, res) => {
           <td>Name:</td>
           <td>${theCustomer.firstName} ${theCustomer.lastName}</td>
         </tr>
-        <tr><td>Apartment:</td><td>${theCustomer.apartment}</td></tr>
+        ${
+          theCustomer.apartment
+            ? `<tr><td>Apartment:</td><td>${theCustomer.apartment}</td></tr>`
+            : ""
+        }
         <tr><td>Address:</td><td>${theCustomer.address}</td></tr>
         <tr><td>Zip:</td><td>${theCustomer.zip}</td></tr>
         <tr><td>City:</td><td>${theCustomer.city}</td></tr>
         <tr><td>Country:</td><td>${theCustomer.country}</td></tr>
         <tr><td>Phone:</td><td>${theCustomer.phone}</td></tr>
         <tr><td>Email:</td><td>${theCustomer.email}</td></tr>
-        <tr><td>CompanyName:</td><td>${theCustomer.companyName}</td></tr>
+        ${
+          theCustomer.companyName
+            ? `<tr><td>CompanyName:</td><td>${
+                theCustomer.companyName
+              }</td></tr>`
+            : ""
+        }
         <tr><td>Description:</td><td>${theCustomer.description}</td></tr>
       </div>
     </div>`;
