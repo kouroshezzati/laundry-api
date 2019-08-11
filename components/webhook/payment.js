@@ -53,6 +53,7 @@ module.exports = async (req, res) => {
       })
     );
     let invoiceItems = `
+    <div>Order id:  ${orderId}</div>
     <div>Pickup date:  ${moment(theOrder.pickup_date).format(
       "MMMM D, YYYY HH:mm"
     )}</div>
