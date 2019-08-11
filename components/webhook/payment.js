@@ -53,10 +53,10 @@ module.exports = async (req, res) => {
       })
     );
     let invoiceItems = `
-    <div>pickup date: ${moment(theOrder.pickup_date).format(
+    <div>Pickup date:  ${moment(theOrder.pickup_date).format(
       "MMMM D, YYYY HH:mm"
     )}</div>
-    <div>deliver date: ${moment(theOrder.deliver_date).format(
+    <div>Deliver date:  ${moment(theOrder.deliver_date).format(
       "MMMM D, YYYY HH:mm"
     )}</div>
     <table style="text-align: center;">
@@ -74,7 +74,7 @@ module.exports = async (req, res) => {
     });
     invoiceItems += `</table><h3>Sum: ${price}</h3>`;
     if (theOrder.description) {
-      invoiceItems += `<h2>Description: ${theOrder.description}</h2>`;
+      invoiceItems += `<h4>Description: ${theOrder.description}</h4>`;
     }
     const customerInformation = `<div>
     <h3>Customer information:</h3>
