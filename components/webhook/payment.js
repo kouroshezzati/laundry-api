@@ -4,6 +4,7 @@ const models = app.models;
 const mollie = require("@mollie/api-client")({
   apiKey: "test_DmRVtMkQJjrfS4Fr6xhubMybpwHfuK"
 });
+const { multipleCurrency } = require("../order/index");
 const sendmail = require("sendmail")({
   logger: {
     debug: console.log,
@@ -35,7 +36,7 @@ module.exports = async (req, res) => {
     const { mailInvoices, theCustomer, price } = metadata;
     let invoiceItems = `<table>
     <tr style="font-weight: 700;">
-      <td>ID</td><td>Name</td><td>Number</td><td>Price</td>
+      <td>ID</td><td>Name</td><td>Number</td><td>Price of each</td><td>Price</td>
     </tr>`;
     mailInvoices.forEach(mailInvoice => {
       invoiceItems += `<tr>
@@ -43,9 +44,10 @@ module.exports = async (req, res) => {
       <td>${mailInvoice.name}</td>
       <td>${mailInvoice.number}</td>
       <td>${mailInvoice.price}</td>
+      <td>${multipleCurrency(mailInvoice.number, mailInvoice.price)}</td>
       </tr>`;
     });
-    invoiceItems += `</table><h3>Total price: ${price}</h3>`;
+    invoiceItems += `</table><h3>Sum: ${price}</h3>`;
     const customerInformation = `<div>
     <h3>Customer information:</h3>
       <table>

@@ -198,4 +198,4 @@ const ReceiveOrder = async (req, res) => {
   }
 };
 
-module.exports = { AddOrder, ReceiveOrder };
+module.exports = { AddOrder, ReceiveOrder, calc, multipleCurrency };
