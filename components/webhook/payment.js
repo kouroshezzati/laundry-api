@@ -45,7 +45,7 @@ module.exports = async (req, res) => {
     });
     invoiceItems += `</table>`;
     const customerInformation = `<div>
-    <div style="max-width: 150px">Customer information</div>
+    <h3>Customer information:</h3>
       <table>
         <tr>
           <td>Name:</td>
