@@ -45,7 +45,7 @@ module.exports = async (req, res) => {
       <td>${mailInvoice.price}</td>
       </tr>`;
     });
-    invoiceItems += `</table>`;
+    invoiceItems += `</table><h3>Total price: ${price}</h3>`;
     const customerInformation = `<div>
     <h3>Customer information:</h3>
       <table>
@@ -79,7 +79,6 @@ module.exports = async (req, res) => {
             : ""
         }
         </table>
-        <h3>Total price: ${price}</h3>
       </div>
     </div>`;
     if (payment.status === "paid") {
