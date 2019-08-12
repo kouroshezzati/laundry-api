@@ -1,10 +1,5 @@
-const app = require("../../server/server");
 const chalk = require("chalk");
 const moment = require("moment");
-const models = app.models;
-const mollie = require("@mollie/api-client")({
-  apiKey: "test_DmRVtMkQJjrfS4Fr6xhubMybpwHfuK"
-});
 const { multipleCurrency } = require("../order/index");
 const sendmail = require("sendmail")({
   logger: {
@@ -16,42 +11,24 @@ const sendmail = require("sendmail")({
   smtpPort: 25, // Default: 25
   smtpHost: "localhost" // Default: -1 - extra smtp host after resolveMX
 });
+const { GetPaymentWithInvoices } = require("./index");
+
 const imgLogo = `<img 
         style="height:111px;width:100px;" 
-        src="https://www.bubblesonline.nl/static/media/logo_65.8ebfed72.png">`;
+        src="https://www.bubblesonline.nl/static/media/logo_65.8ebfed72.png" />`;
 
 module.exports = async (req, res) => {
   try {
-    const { Order, Customer, Invoice, Product } = models;
     const { orderId } = req.params;
-    const order = await Order.findOne({ where: { id: orderId } });
     if (!order) {
       throw new Error("Invalid order id!");
     }
-    const payment = await mollie.payments.get(order.paymentId);
-    await Order.updateAll({ id: orderId }, { status: payment.status });
-    console.log(
-      chalk.red(`order id:${orderId}'s payment status is ${payment.status}`)
-    );
-    const { metadata } = payment;
-    const { customerId, price } = metadata;
-    const theCustomer = await Customer.findOne({ where: { id: customerId } });
-    const theOrder = await Order.findOne({ where: { id: orderId } });
-    const theInvoices = await Invoice.find({ where: { orderId } });
-    let mailInvoices = [];
-    await Promise.all(
-      theInvoices.map(async _theInvoice => {
-        const theProduct = await Product.findOne({
-          where: { id: _theInvoice.productId }
-        });
-        mailInvoices.push({
-          price: theProduct.price,
-          number: _theInvoice.number,
-          productId: _theInvoice.productId,
-          name: theProduct.name
-        });
-      })
-    );
+    const {
+      theCustomer,
+      theOrder,
+      mailInvoices,
+      payment
+    } = GetPaymentWithInvoices(orderId);
     let invoiceItems = `
     <div>Order id:  ${orderId}</div>
     <div>Pickup date:  ${moment(theOrder.pickup_date).format(

@@ -6,8 +6,12 @@
 "use strict";
 const ModelPagination = require("../../components/pagination/index");
 const Contactus = require("../../components/contactus/index");
-const { AddOrder, ReceiveOrder } = require("../../components/order/index");
-const PaymentWebhook = require("../../components/webhook/payment");
+const {
+  AddOrder,
+  ReceiveOrder,
+  GetOrder
+} = require("../../components/order/index");
+const PaymentWebhook = require("../../components/payment/webhook");
 
 module.exports = function(server) {
   // Install a `/` route that returns server status
@@ -17,6 +21,7 @@ module.exports = function(server) {
   router.post("/api/contactus", Contactus);
   router.post("/api/AddOrder", AddOrder);
   router.get("/api/Order/:id", ReceiveOrder);
+  router.get("/api/PaidOrder/:id/:customerId", GetOrder);
   router.post("/api/payment/webhook/:orderId", PaymentWebhook);
   server.use(router);
 };

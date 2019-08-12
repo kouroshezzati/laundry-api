@@ -4,7 +4,7 @@ const models = app.models;
 const mollie = require("@mollie/api-client")({
   apiKey: "test_DmRVtMkQJjrfS4Fr6xhubMybpwHfuK"
 });
-
+const { GetPaymentWithInvoices } = require("../payment/index");
 const ADD = "ADD";
 const SUB = "SUB";
 
@@ -182,4 +182,36 @@ const ReceiveOrder = async (req, res) => {
   }
 };
 
-module.exports = { AddOrder, ReceiveOrder, calc, multipleCurrency };
+const GetOrder = async (req, res) => {
+  try {
+    const { id, customerId } = req.params;
+    if (!id) {
+      throw new Error("The order id must be provided!");
+    }
+    if (!customerId) {
+      throw new Error("The customer id must be provided!");
+    }
+    const {
+      payment,
+      theCustomer,
+      theOrder,
+      price,
+      theMailInvoices
+    } = await GetPaymentWithInvoices(id);
+    if (customerId != theCustomer.id) {
+      throw new Error("The customer id is unauthorized!");
+    }
+    res.json({
+      selectedProducts: payment.metadata.selectedProducts,
+      price,
+      pickup_date: theOrder.pickup_date,
+      deliver_date: theOrder.deliver_date,
+      invoices: theMailInvoices,
+      status: payment.status
+    });
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};
+
+module.exports = { AddOrder, ReceiveOrder, calc, multipleCurrency, GetOrder };
