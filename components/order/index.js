@@ -195,7 +195,6 @@ const GetOrder = async (req, res) => {
       payment,
       theCustomer,
       theOrder,
-      price,
       theMailInvoices
     } = await GetPaymentWithInvoices(id);
     if (customerId != theCustomer.id) {
@@ -203,7 +202,7 @@ const GetOrder = async (req, res) => {
     }
     res.json({
       selectedProducts: payment.metadata.selectedProducts,
-      price,
+      price: payment.price,
       pickup_date: theOrder.pickup_date,
       deliver_date: theOrder.deliver_date,
       invoices: theMailInvoices,

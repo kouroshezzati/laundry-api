@@ -20,15 +20,16 @@ const imgLogo = `<img
 module.exports = async (req, res) => {
   try {
     const { orderId } = req.params;
-    if (!order) {
-      throw new Error("Invalid order id!");
+    if (!orderId) {
+      throw new Error("The order id must be defined!");
     }
     const {
       theCustomer,
       theOrder,
       mailInvoices,
-      payment
-    } = GetPaymentWithInvoices(orderId);
+      payment,
+      price
+    } = await GetPaymentWithInvoices(orderId);
     let invoiceItems = `
     <div>Order id:  ${orderId}</div>
     <div>Pickup date:  ${moment(theOrder.pickup_date).format(
@@ -50,7 +51,7 @@ module.exports = async (req, res) => {
       <td>${multipleCurrency(mailInvoice.number, mailInvoice.price)}</td>
       </tr>`;
     });
-    invoiceItems += `</table><h3>Sum: ${price}</h3>`;
+    invoiceItems += `</table><h3>Sum: ${payment.price}</h3>`;
     if (theOrder.description) {
       invoiceItems += `<h4>Description: ${theOrder.description}</h4>`;
     }

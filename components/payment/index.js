@@ -10,16 +10,16 @@ const GetPaymentWithInvoices = async orderId => {
     const { Order, Customer, Invoice, Product } = models;
     const order = await Order.findOne({ where: { id: orderId } });
     if (!order) {
-      throw new Error("Invalid order id!");
+      throw new Error(`There is no such order with ${orderId} id!`);
     }
     const payment = await mollie.payments.get(order.paymentId);
     await Order.updateAll({ id: orderId }, { status: payment.status });
     console.log(
       chalk.red(`order id:${orderId}'s payment status is ${payment.status}`)
     );
-    const { metadata } = payment;
-    const { customerId, price, selectedProducts } = metadata;
+    const { customerId } = payment.metadata;
     const theCustomer = await Customer.findOne({ where: { id: customerId } });
+    console.log('the customer is', theCustomer);
     const theOrder = await Order.findOne({ where: { id: orderId } });
     const theInvoices = await Invoice.find({ where: { orderId } });
     let mailInvoices = [];
@@ -36,7 +36,7 @@ const GetPaymentWithInvoices = async orderId => {
         });
       })
     );
-    return { mailInvoices, theInvoices, theOrder, theCustomer, price, payment };
+    return { mailInvoices, theInvoices, theOrder, payment };
   } catch (err) {
     return err;
   }
