@@ -202,7 +202,7 @@ const GetOrder = async (req, res) => {
     }
     res.json({
       selectedProducts: payment.metadata.selectedProducts,
-      price: payment.price,
+      price: payment.metadata.price,
       pickup_date: theOrder.pickup_date,
       deliver_date: theOrder.deliver_date,
       invoices: theMailInvoices,

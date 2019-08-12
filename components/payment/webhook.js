@@ -27,9 +27,8 @@ module.exports = async (req, res) => {
       theCustomer,
       theOrder,
       mailInvoices,
-      payment,
-      price
-    } = await GetPaymentWithInvoices(orderId);
+      payment
+    } = await GetPaymentWithInvoices(orderId);    
     let invoiceItems = `
     <div>Order id:  ${orderId}</div>
     <div>Pickup date:  ${moment(theOrder.pickup_date).format(
@@ -51,7 +50,7 @@ module.exports = async (req, res) => {
       <td>${multipleCurrency(mailInvoice.number, mailInvoice.price)}</td>
       </tr>`;
     });
-    invoiceItems += `</table><h3>Sum: ${payment.price}</h3>`;
+    invoiceItems += `</table><h3>Sum: ${payment.metadata.price}</h3>`;
     if (theOrder.description) {
       invoiceItems += `<h4>Description: ${theOrder.description}</h4>`;
     }
@@ -94,8 +93,7 @@ module.exports = async (req, res) => {
           ${invoiceItems}
           <hr>
           ${customerInformation}
-          <p style="text-align: center;">Bubblesonline &copy; 2019.</p>
-          `
+          <p style="text-align: center;">Bubblesonline &copy; 2019.</p>`
         },
         function(err, reply) {
           if (err) {
@@ -104,9 +102,6 @@ module.exports = async (req, res) => {
           }
           console.log(reply);
           return res.json({
-            reply,
-            responseCode: 0,
-            responseDesc: "Sucess",
             payment,
             pickupDate: theOrder.pickup_date,
             deliverDate: theOrder.deliver_date

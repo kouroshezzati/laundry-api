@@ -19,7 +19,6 @@ const GetPaymentWithInvoices = async orderId => {
     );
     const { customerId } = payment.metadata;
     const theCustomer = await Customer.findOne({ where: { id: customerId } });
-    console.log('the customer is', theCustomer);
     const theOrder = await Order.findOne({ where: { id: orderId } });
     const theInvoices = await Invoice.find({ where: { orderId } });
     let mailInvoices = [];
@@ -36,7 +35,7 @@ const GetPaymentWithInvoices = async orderId => {
         });
       })
     );
-    return { mailInvoices, theInvoices, theOrder, payment };
+    return { mailInvoices, theInvoices, theOrder, payment, theCustomer };
   } catch (err) {
     return err;
   }
