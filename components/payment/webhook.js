@@ -46,11 +46,14 @@ module.exports = async (req, res) => {
       <td>${mailInvoice.productId}</td>
       <td>${mailInvoice.name}</td>
       <td>${mailInvoice.number}</td>
-      <td>${mailInvoice.price}</td>
-      <td>${multipleCurrency(mailInvoice.number, mailInvoice.price)}</td>
+      <td>&euro; ${mailInvoice.price}</td>
+      <td>&euro; ${multipleCurrency(
+        mailInvoice.number,
+        mailInvoice.price
+      )}</td>
       </tr>`;
     });
-    invoiceItems += `</table><h3>Sum: ${payment.metadata.price}</h3>`;
+    invoiceItems += `</table><h3>Sum:&euro; ${payment.metadata.price}</h3>`;
     if (theOrder.description) {
       invoiceItems += `<h4>Description: ${theOrder.description}</h4>`;
     }
