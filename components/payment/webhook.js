@@ -53,7 +53,7 @@ module.exports = async (req, res) => {
       )}</td>
       </tr>`;
     });
-    invoiceItems += `</table><h3>Sum:&euro; ${payment.metadata.price}</h3>`;
+    invoiceItems += `</table><h3>Sum: &euro; ${payment.metadata.price}</h3>`;
     if (theOrder.description) {
       invoiceItems += `<h4>Description: ${theOrder.description}</h4>`;
     }

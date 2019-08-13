@@ -162,26 +162,6 @@ const AddOrder = async (req, res) => {
   }
 };
 
-const ReceiveOrder = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { Order, Invoice } = models;
-    const result = await Order.updateAll({ id }, { payed: true });
-    if (result.count === 1) {
-      // const invoices = await Invoice.findAll({ where: { orderId: id } });
-      // console.log(chalk.green(JSON.stringify(invoices)));
-      console.log("Redirect to https://www.bubblesonline.nl/invoice/" + id);
-      res.writeHead(302, {
-        location: "https://www.bubblesonline.nl/invoice/" + id
-      });
-      return res.end();
-    }
-    res.status(404).end();
-  } catch (err) {
-    res.json(err);
-  }
-};
-
 const GetOrder = async (req, res) => {
   try {
     const { id, customerId } = req.params;
@@ -213,4 +193,4 @@ const GetOrder = async (req, res) => {
   }
 };
 
-module.exports = { AddOrder, ReceiveOrder, calc, multipleCurrency, GetOrder };
+module.exports = { AddOrder, calc, multipleCurrency, GetOrder };

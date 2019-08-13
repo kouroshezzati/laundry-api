@@ -19,9 +19,13 @@ module.exports = async (req, res) => {
     if (limit && isNaN(limit)) {
       throw new Error(limit + " is invalid limit parameter, try again.");
     }
-    const count = await Order.count({ customerId });
+    const count = await Order.count({ customerId, status: "paid" });
     let data = { orders: {}, count, skip, limit, page };
-    const orders = await Order.find({ where: { customerId }, skip, limit });
+    const orders = await Order.find({
+      where: { customerId, status: "paid" },
+      skip,
+      limit
+    });
     orders.map(
       order =>
         (data.orders[order.id] = {
