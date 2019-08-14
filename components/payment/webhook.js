@@ -28,22 +28,22 @@ module.exports = async (req, res) => {
       theOrder,
       mailInvoices,
       payment
-    } = await GetPaymentWithInvoices(orderId);    
+    } = await GetPaymentWithInvoices(orderId);
     let invoiceItems = `
-    <div>${__('Order id')}:  ${orderId}</div>
-    <div>${__('Pickup date')}:  ${moment(theOrder.pickup_date).format(
+    <div>${__("Order id")}:  ${orderId}</div>
+    <div>${__("Pickup date")}:  ${moment(theOrder.pickup_date).format(
       "MMMM D, YYYY HH:mm"
     )}</div>
-    <div>${__('Deliver date')}:  ${moment(theOrder.deliver_date).format(
+    <div>${__("Deliver date")}:  ${moment(theOrder.deliver_date).format(
       "MMMM D, YYYY HH:mm"
     )}</div>
     <table style="text-align: center;">
     <tr style="font-weight: 700;background: lightgray;padding: 5px;">
-      <th>${__('ID')}</th>
-      <th>${__('Name')}</th>
-      <th>${__('Number')}</th>
-      <th>${__('Price of each')}</th>
-      <th>${__('Price')}</th>
+      <th>${__("ID")}</th>
+      <th>${__("Name")}</th>
+      <th>${__("Number")}</th>
+      <th>${__("Price of each")}</th>
+      <th>${__("Price")}</th>
     </tr>`;
     mailInvoices.forEach(mailInvoice => {
       invoiceItems += `<tr>
@@ -51,37 +51,38 @@ module.exports = async (req, res) => {
       <td>${mailInvoice.name}</td>
       <td>${mailInvoice.number}</td>
       <td>&euro; ${mailInvoice.price}</td>
-      <td>&euro; ${multipleCurrency(
-        mailInvoice.number,
-        mailInvoice.price
-      )}</td>
+      <td>&euro; ${multipleCurrency(mailInvoice.number, mailInvoice.price)}</td>
       </tr>`;
     });
-    invoiceItems += `</table><h3>${__('Sum')}: &euro; ${payment.metadata.price}</h3>`;
+    invoiceItems += `</table><h3>${__("Sum")}: &euro; ${
+      payment.metadata.price
+    }</h3>`;
     if (theOrder.description) {
-      invoiceItems += `<h4>${__('Description')}: ${theOrder.description}</h4>`;
+      invoiceItems += `<h4>${__("Description")}: ${theOrder.description}</h4>`;
     }
     const customerInformation = `<div>
-    <h3>${__('Customer information')}:</h3>
+    <h3>${__("Customer information")}:</h3>
       <table>
         <tr>
-          <td>${__('Name')}:</td>
+          <td>${__("Name")}:</td>
           <td>${theCustomer.firstName} ${theCustomer.lastName}</td>
         </tr>
         ${
           theCustomer.apartment
-            ? `<tr><td>${__('Apartment')}:</td><td>${theCustomer.apartment}</td></tr>`
+            ? `<tr><td>${__("Apartment")}:</td><td>${
+                theCustomer.apartment
+              }</td></tr>`
             : ""
         }
-        <tr><td>${__('Address')}:</td><td>${theCustomer.address}</td></tr>
-        <tr><td>${__('Zip')}:</td><td>${theCustomer.zip}</td></tr>
-        <tr><td>${__('City')}:</td><td>${theCustomer.city}</td></tr>
-        <tr><td>${__('Country')}:</td><td>${theCustomer.country}</td></tr>
-        <tr><td>${__('Phone')}:</td><td>${theCustomer.phone}</td></tr>
-        <tr><td>${__('Email')}:</td><td>${theCustomer.email}</td></tr>
+        <tr><td>${__("Address")}:</td><td>${theCustomer.address}</td></tr>
+        <tr><td>${__("Zip")}:</td><td>${theCustomer.zip}</td></tr>
+        <tr><td>${__("City")}:</td><td>${theCustomer.city}</td></tr>
+        <tr><td>${__("Country")}:</td><td>${theCustomer.country}</td></tr>
+        <tr><td>${__("Phone")}:</td><td>${theCustomer.phone}</td></tr>
+        <tr><td>${__("Email")}:</td><td>${theCustomer.email}</td></tr>
         ${
           theCustomer.companyName
-            ? `<tr><td>${__('CompanyName')}:</td><td>${
+            ? `<tr><td>${__("CompanyName")}:</td><td>${
                 theCustomer.companyName
               }</td></tr>`
             : ""
@@ -96,7 +97,7 @@ module.exports = async (req, res) => {
           to: ["info@bubblesonline.nl", theCustomer.email],
           subject: "Payment",
           html: `<div style="text-align: center;">${imgLogo}</div>
-          <h3>${__('There is payment orderd with these information')}</h3>
+          <h3>${__("There is payment orderd with these information")}</h3>
           ${invoiceItems}
           <hr>
           ${customerInformation}

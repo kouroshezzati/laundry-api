@@ -70,6 +70,7 @@ const AddOrder = async (req, res) => {
       pickup_date,
       invoices
     } = req.body;
+    const { lang } = req.query;
     if (!customerId) {
       throw new Error("Customer id is not found. please provide it!");
     }
@@ -85,7 +86,10 @@ const AddOrder = async (req, res) => {
       date: new Date()
     });
     const orderId = createdOrder.id;
-    _invoices = invoices.map(_invoice => ({ ..._invoice, orderId: String(orderId) }));
+    _invoices = invoices.map(_invoice => ({
+      ..._invoice,
+      orderId: String(orderId)
+    }));
     const selectedProducts = {};
     _invoices.map(_invoice => {
       selectedProducts[_invoice.productId] = _invoice.number;
@@ -109,13 +113,14 @@ const AddOrder = async (req, res) => {
         value: price,
         currency: "EUR"
       },
-      redirectUrl: "https://www.bubblesonline.nl/invoice/" + orderId,
-      webhookUrl: "https://www.bubblesonline.nl/api/payment/webhook/" + orderId,
+      redirectUrl: `https://www.bubblesonline.nl/invoice/${orderId}`,
+      webhookUrl: `https://www.bubblesonline.nl/api/payment/webhook/${orderId}?lang=${lang}`,
       metadata: {
         selectedProducts,
         price,
         customerId,
-        orderId
+        orderId,
+        lang
       }
     };
     paymentPayload.description = description
