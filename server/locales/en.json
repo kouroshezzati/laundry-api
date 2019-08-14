@@ -1,4 +1,22 @@
 {
 	"service": "service",
-	"services": "services"
+	"services": "services",
+	"Order id": "Order id",
+	"Pickup date": "Pickup date",
+	"Deliver date": "Deliver date",
+	"ID": "ID",
+	"Name": "Name",
+	"Number": "Number",
+	"Price of each": "Price of each",
+	"Price": "Price",
+	"Sum": "Sum",
+	"Customer information": "Customer information",
+	"Address": "Address",
+	"Zip": "Zip",
+	"City": "City",
+	"Country": "Country",
+	"Phone": "Phone",
+	"Email": "Email",
+	"CompanyName": "CompanyName",
+	"horrable": "horrable"
 }

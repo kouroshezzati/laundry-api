@@ -1,5 +1,16 @@
 {
-	"services": "!services",
-	"name": "name",
-	"service": "service"
+	"name": "naam",
+	"service": "diensten",
+	"Order id": "Order id",
+	"Pickup date": "Ophaal datum",
+	"Deliver date": "Lever datum",
+	"ID": "ID",
+	"Name": "Naam",
+	"Number": "Nummer",
+	"Price of each": "Prijs of each",
+	"Price": "Prijs",
+	"Sum": "Sum",
+	"Customer information": "Customer information",
+	"Address": "Address",
+	"Zip": "Zip"
 }
