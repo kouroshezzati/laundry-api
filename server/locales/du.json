@@ -12,5 +12,11 @@
 	"Sum": "Sum",
 	"Customer information": "Customer information",
 	"Address": "Address",
-	"Zip": "Zip"
+	"Zip": "Zip",
+	"City": "City",
+	"Country": "Country",
+	"Phone": "Phone",
+	"Email": "Email",
+	"CompanyName": "Company Name",
+	"There is payment orderd with these information": "There is payment orderd with these information"
 }
