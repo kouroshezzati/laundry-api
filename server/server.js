@@ -7,10 +7,23 @@
 
 var loopback = require("loopback");
 var boot = require("loopback-boot");
-var cors = require("cors")
+var cors = require("cors");
+var i18n = require("i18n");
+
+i18n.configure({
+  locales: ["en", "du"],
+  directory: __dirname + "/locales",
+  register: global
+});
 
 var app = (module.exports = loopback());
-app.use(cors())
+app.use(cors());
+app.use(i18n.init);
+app.use((req, res, next) => {
+  i18n.setLocale(req.query.lang || "en");
+  next();
+});
+
 app.start = function() {
   return app.listen(app.get("port"), function() {
     app.emit("started");
