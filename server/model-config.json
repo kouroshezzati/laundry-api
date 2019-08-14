@@ -52,7 +52,7 @@
   },
   "Invoice": {
     "dataSource": "postgresDS",
-    "public": false
+    "public": true
   },
   "Category": {
     "dataSource": "postgresDS",

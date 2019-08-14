@@ -67,7 +67,8 @@ const AddOrder = async (req, res) => {
       customerId,
       description = "",
       deliver_date,
-      pickup_date
+      pickup_date,
+      invoices
     } = req.body;
     if (!customerId) {
       throw new Error("Customer id is not found. please provide it!");
@@ -76,86 +77,63 @@ const AddOrder = async (req, res) => {
     if (!theCustomer) {
       throw new Error("There is no customer with this id");
     }
-    const { firstName } = theCustomer;
-    console.log("the customer result is", chalk.green(firstName));
-    Order.create(
-      {
-        customerId,
-        description,
-        deliver_date,
-        pickup_date,
-        date: new Date()
-      },
-      (err, model) => {
-        if (err) {
-          throw new Error(err);
-        }
-        const orderId = model.id;
-        let { invoices } = req.body;
-        invoices = invoices.map(_invoice => ({ ..._invoice, orderId }));
-        const selectedProducts = {};
-        invoices.map(_invoice => {
-          selectedProducts[_invoice.productId] = _invoice.number;
+    const createdOrder = await Order.create({
+      customerId,
+      description,
+      deliver_date,
+      pickup_date,
+      date: new Date()
+    });
+    const orderId = createdOrder.id;
+    _invoices = invoices.map(_invoice => ({ ..._invoice, orderId: String(orderId) }));
+    const selectedProducts = {};
+    _invoices.map(_invoice => {
+      selectedProducts[_invoice.productId] = _invoice.number;
+    });
+    const createdInvoices = await Invoice.create(_invoices);
+    let price;
+    await Promise.all(
+      createdInvoices.map(async _invoice => {
+        const product = await Product.findOne({
+          where: { id: _invoice.productId }
         });
-        Invoice.create(invoices, async (err, invoiceModel) => {
-          if (err) {
-            throw new Error(err);
-          }
-          let price;
-          await Promise.all(
-            invoiceModel.map(async _invoice => {
-              const product = await Product.findOne({
-                where: { id: _invoice.productId }
-              });
-              price = calc(
-                ADD,
-                multipleCurrency(product.price, _invoice.number),
-                price
-              );
-            })
-          );
-          const paymentPayload = {
-            amount: {
-              value: price,
-              currency: "EUR"
-            },
-            redirectUrl: "https://www.bubblesonline.nl/invoice/" + orderId,
-            webhookUrl:
-              "https://www.bubblesonline.nl/api/payment/webhook/" + orderId,
-            metadata: {
-              selectedProducts,
-              price,
-              customerId,
-              orderId
-            }
-          };
-          paymentPayload.description = description
-            ? description
-            : `order id is: ${orderId}`;
-          console.log(
-            "The payment payload:",
-            chalk.green(JSON.stringify(paymentPayload))
-          );
-          mollie.payments
-            .create(paymentPayload)
-            .then(async payment => {
-              const orderUpdateResult = await Order.updateAll(
-                { id: orderId },
-                { paymentId: payment.id, amount: price }
-              );
-              console.log(
-                "the update order record result is:",
-                chalk.green(JSON.stringify(orderUpdateResult, 2, null))
-              );
-              res.send(payment.getPaymentUrl());
-            })
-            .catch(err => {
-              console.log(JSON.stringify(err, 2, null));
-              throw new Error(err);
-            });
-        });
-      }
+        price = calc(
+          ADD,
+          multipleCurrency(product.price, _invoice.number),
+          price
+        );
+      })
     );
+    const paymentPayload = {
+      amount: {
+        value: price,
+        currency: "EUR"
+      },
+      redirectUrl: "https://www.bubblesonline.nl/invoice/" + orderId,
+      webhookUrl: "https://www.bubblesonline.nl/api/payment/webhook/" + orderId,
+      metadata: {
+        selectedProducts,
+        price,
+        customerId,
+        orderId
+      }
+    };
+    paymentPayload.description = description
+      ? description
+      : `order id is: ${orderId}`;
+    console.log(
+      "The payment payload:",
+      chalk.green(JSON.stringify(paymentPayload))
+    );
+    const payment = await mollie.payments.create(paymentPayload);
+    const orderUpdateResult = await Order.updateAll(
+      { id: orderId },
+      { paymentId: payment.id, amount: price }
+    );
+    if (orderUpdateResult.count !== 1) {
+      throw new Error(`Error: Failure in update order with ${orderId} id!`);
+    }
+    res.send(payment.getPaymentUrl());
   } catch (err) {
     console.log(chalk.red(err));
     res.send(err);
