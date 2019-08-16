@@ -15,7 +15,7 @@ const { GetPaymentWithInvoices } = require("./index");
 
 const imgLogo = `<img 
         style="height:111px;width:100px;" 
-        src="https://www.bubblesonline.nl/static/media/logo_65.8ebfed72.png" />`;
+        src="https://www.bubblesonline.nl/static/media/bubblesonline_main_logo.png" />`;
 
 module.exports = async (req, res) => {
   try {
