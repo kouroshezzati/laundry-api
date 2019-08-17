@@ -13,9 +13,7 @@ const sendmail = require("sendmail")({
 });
 const { GetPaymentWithInvoices } = require("./index");
 
-const imgLogo = `<img 
-        style="height:111px;width:100px;" 
-        src="https://www.bubblesonline.nl/api/logo" />`;
+const imgLogo = `<img src="https://www.bubblesonline.nl/api/logo" />`;
 
 module.exports = async (req, res) => {
   try {
