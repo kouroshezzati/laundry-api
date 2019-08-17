@@ -20,7 +20,6 @@ var app = (module.exports = loopback());
 app.use(cors());
 app.use(i18n.init);
 app.use((req, res, next) => {
-  console.log(req.query.lang);
   i18n.setLocale(req.query.lang || "en");
   next();
 });

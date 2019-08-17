@@ -8,10 +8,13 @@ const ModelPagination = require("../../components/pagination/index");
 const Contactus = require("../../components/contactus/index");
 const { AddOrder, GetOrder } = require("../../components/order/index");
 const PaymentWebhook = require("../../components/payment/webhook");
+const path = require('path');
 
 module.exports = function(server) {
   var router = server.loopback.Router();
-  router.get("/", server.loopback.status());
+  router.get("/api/logo", (req, res) => {
+    res.sendFile(path.resolve('client/logo.png'))
+  });
   router.get("/api/MyOrders/:id", ModelPagination);
   router.post("/api/contactus", Contactus);
   router.post("/api/AddOrder", AddOrder);
