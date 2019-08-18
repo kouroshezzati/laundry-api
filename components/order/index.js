@@ -70,6 +70,7 @@ const AddOrder = async (req, res) => {
       pickup_date,
       invoices
     } = req.body;
+    let price;
     const { lang } = req.query;
     if (!customerId) {
       throw new Error("Customer id is not found. please provide it!");
@@ -77,6 +78,21 @@ const AddOrder = async (req, res) => {
     const theCustomer = await Customer.findOne({ where: { customerId } });
     if (!theCustomer) {
       throw new Error("There is no customer with this id");
+    }
+    await Promise.all(
+      invoices.map(async _invoice => {
+        const _product = await Product.findOne({
+          where: { id: _invoice.productId }
+        });
+        price = calc(
+          ADD,
+          multipleCurrency(_product.price, _invoice.number),
+          price
+        );
+      })
+    );
+    if (parseFloat(price) < 22) {
+      throw new Error("The minimum order is 22 euro!");
     }
     const createdOrder = await Order.create({
       customerId,
@@ -94,20 +110,7 @@ const AddOrder = async (req, res) => {
     _invoices.map(_invoice => {
       selectedProducts[_invoice.productId] = _invoice.number;
     });
-    const createdInvoices = await Invoice.create(_invoices);
-    let price;
-    await Promise.all(
-      createdInvoices.map(async _invoice => {
-        const product = await Product.findOne({
-          where: { id: _invoice.productId }
-        });
-        price = calc(
-          ADD,
-          multipleCurrency(product.price, _invoice.number),
-          price
-        );
-      })
-    );
+    await Invoice.create(_invoices);
     const paymentPayload = {
       amount: {
         value: price,
@@ -140,8 +143,8 @@ const AddOrder = async (req, res) => {
     }
     res.send(payment.getPaymentUrl());
   } catch (err) {
-    console.log(chalk.red(err));
-    res.send(err);
+    console.log(chalk.red(err.message));
+    return res.status(400).send({ error: err.message });
   }
 };
 
