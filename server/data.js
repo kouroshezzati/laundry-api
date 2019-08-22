@@ -3,7 +3,7 @@ module.exports = [
     "name": "SHIRT / POLO ",
     "price": "3.50",
     "category": {
-      "name": "DRY & CLEAN"
+      "name": "DRY CLEAN"
     },
     "type": "cheap"
   },
@@ -11,7 +11,7 @@ module.exports = [
     "name": "VEST ",
     "price": "4.95",
     "category": {
-      "name": "DRY & CLEAN"
+      "name": "DRY CLEAN"
     },
     "type": "cheap"
   },
@@ -19,7 +19,7 @@ module.exports = [
     "name": "BLOUSE ",
     "price": "5.95",
     "category": {
-      "name": "DRY & CLEAN"
+      "name": "DRY CLEAN"
     },
     "type": "cheap"
   },
@@ -27,7 +27,7 @@ module.exports = [
     "name": "SILK / TOP ",
     "price": "7.95",
     "category": {
-      "name": "DRY & CLEAN"
+      "name": "DRY CLEAN"
     },
     "type": "cheap"
   },
@@ -35,7 +35,7 @@ module.exports = [
     "name": "JACKET / BLAZER ",
     "price": "9.50",
     "category": {
-      "name": "DRY & CLEAN"
+      "name": "DRY CLEAN"
     },
     "type": "cheap"
   },
