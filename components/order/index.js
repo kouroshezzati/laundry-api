@@ -116,8 +116,8 @@ const AddOrder = async (req, res) => {
         value: price,
         currency: "EUR"
       },
-      redirectUrl: `https://bubblesonline.nl/invoice/${orderId}`,
-      webhookUrl: `https://bubblesonline.nl/api/payment/webhook/${orderId}?lang=${lang}`,
+      redirectUrl: `https://www.bubblesonline.nl/invoice/${orderId}`,
+      webhookUrl: `https://www.bubblesonline.nl/api/payment/webhook/${orderId}?lang=${lang}`,
       metadata: {
         selectedProducts,
         price,
