@@ -108,7 +108,6 @@ module.exports = async (req, res) => {
             console.log(err && err.stack);
             return res.JSON({ err });
           }
-          console.log("the reply sendmail function is", reply);
           return res.json({
             payment,
             pickupDate: theOrder.pickup_date,
