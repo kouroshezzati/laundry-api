@@ -91,7 +91,7 @@ module.exports = async (req, res) => {
     </div>`;
     console.log("payment status:", payment.status);
     if (payment.status === "paid") {
-      sendmail(
+      await sendmail(
         {
           from: "no-replay@bubblesonline.nl",
           to: ["info@bubblesonline.nl", theCustomer.email],
@@ -108,7 +108,7 @@ module.exports = async (req, res) => {
             console.log(err && err.stack);
             return res.JSON({ err });
           }
-          console.log('the reply sendmail function is', reply);
+          console.log("the reply sendmail function is", reply);
           return res.json({
             payment,
             pickupDate: theOrder.pickup_date,
