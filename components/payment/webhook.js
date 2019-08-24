@@ -21,6 +21,7 @@ module.exports = async (req, res) => {
     if (!orderId) {
       throw new Error("The order id must be defined!");
     }
+    console.log("order id", orderId);
     const {
       theCustomer,
       theOrder,
@@ -88,6 +89,7 @@ module.exports = async (req, res) => {
         </table>
       </div>
     </div>`;
+    console.log("payment status:", payment.status);
     if (payment.status === "paid") {
       sendmail(
         {
@@ -106,7 +108,7 @@ module.exports = async (req, res) => {
             console.log(err && err.stack);
             return res.JSON({ err });
           }
-          console.log(reply);
+          console.log('the reply sendmail function is', reply);
           return res.json({
             payment,
             pickupDate: theOrder.pickup_date,
@@ -119,6 +121,6 @@ module.exports = async (req, res) => {
     }
   } catch (err) {
     console.log(chalk.red(err));
-    res.send(err);
+    res.status(500).send(err);
   }
 };

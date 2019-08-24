@@ -143,8 +143,13 @@ const AddOrder = async (req, res) => {
     }
     res.send(payment.getPaymentUrl());
   } catch (err) {
-    console.log(chalk.red(err.message));
-    return res.status(400).send({ error: err.message });
+    if (err.message) {
+      console.log(chalk.red(err.message));
+      return res.status(400).send({ error: err.message });
+    } else {
+      console.log(err);
+      return res.status(400).send(err);
+    }
   }
 };
 
