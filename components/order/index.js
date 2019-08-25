@@ -2,7 +2,7 @@ const app = require("../../server/server");
 const chalk = require("chalk");
 const models = app.models;
 const mollie = require("@mollie/api-client")({
-  apiKey: "test_DmRVtMkQJjrfS4Fr6xhubMybpwHfuK"
+  apiKey: "live_JUcavcqJm9hf8vxA5AcdtHbE3TM7mW"
 });
 const { GetPaymentWithInvoices } = require("../payment/index");
 const ADD = "ADD";
